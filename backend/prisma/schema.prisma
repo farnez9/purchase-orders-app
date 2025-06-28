@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id           Int       @id @default(autoincrement())
+  name         String
+  sellingPrice Float
+  stocks       Stock[]
+}
+
+model Supplier {
+  id           Int       @id @default(autoincrement())
+  name         String
+  shippingDays Int
+  stocks       Stock[]
+  discounts    Discount[]
+}
+
+model Stock {
+  id         Int      @id @default(autoincrement())
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
+  supplierId Int
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  price      Float
+  quantity   Int
+}
+
+model Discount {
+  id           Int      @id @default(autoincrement())
+  supplier     Supplier @relation(fields: [supplierId], references: [id])
+  supplierId   Int
+  type         DiscountType
+  condition    Float
+  percentage   Float
+  dateCondition DateTime?
+}
+
+enum DiscountType {
+  VALUE
+  QUANTITY
+  DATE
+}
