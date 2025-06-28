@@ -1,10 +1,15 @@
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
+import PurchasePage from "./pages/purchase/PurchasePage";
 
 function App() {
   return (
-    <>
-      <p className="read-the-docs">Project is working</p>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/purchase" replace />} />
+        <Route path="/purchase" element={<PurchasePage />} />
+      </Routes>
+    </Router>
   );
 }
 
