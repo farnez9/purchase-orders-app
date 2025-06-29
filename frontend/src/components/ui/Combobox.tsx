@@ -1,19 +1,17 @@
 "use client";
 
-import * as React from "react";
-import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
+import React, { useState } from "react";
+import {
+  Check,
+  CheckIcon,
+  ChevronsUpDownIcon,
+  LoaderCircle,
+} from "lucide-react";
 
 import { cn } from "../../lib/utils";
 import { Button } from "./Button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "./Command";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
+import { Input } from "./Input";
 
 interface ComboboxProps {
   placeholder?: string;
@@ -21,6 +19,7 @@ interface ComboboxProps {
   data: { value: string; label: string }[];
   value?: string | number;
   onChange?: (value: string) => void;
+  isLoading?: boolean;
 }
 
 export function Combobox({
@@ -29,8 +28,15 @@ export function Combobox({
   data,
   value,
   onChange,
+  isLoading,
 }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+
+  const [query, setQuery] = useState("");
+
+  const filteredData = data.filter((item) =>
+    item.label.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -45,36 +51,49 @@ export function Combobox({
           )}
         >
           {value ? data.find((d) => d.value === value)?.label : placeholder}
-          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {isLoading ? (
+            <LoaderCircle className="animate-spin ml-2 h-4 w-4 shrink-0 opacity-50" />
+          ) : (
+            <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0 bg-white">
-        <Command>
-          <CommandInput placeholder={placeholder} />
-          <CommandList>
-            <CommandEmpty>{noDataText}</CommandEmpty>
-            <CommandGroup>
-              {data.map((d) => (
-                <CommandItem
-                  key={d.value}
-                  value={d.value}
-                  onSelect={(currentValue) => {
-                    onChange?.(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  <CheckIcon
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === d.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {d.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
+        <Input
+          placeholder="Search product..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full focus:ring-0"
+        />
+        <div className="max-h-[200px] overflow-auto">
+          {filteredData.length === 0 ? (
+            <div className="text-sm text-muted-foreground p-2">
+              {noDataText}
+            </div>
+          ) : (
+            filteredData.map((d) => (
+              <div
+                key={d.value}
+                onClick={() => {
+                  onChange?.(d.value);
+                  setOpen(false);
+                }}
+                className={cn(
+                  "flex items-center px-2 py-1.5 cursor-pointer hover:bg-accent rounded text-sm",
+                  value === d.value ? "font-medium bg-accent/40" : ""
+                )}
+              >
+                <CheckIcon
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    value === d.value ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {d.label}
+              </div>
+            ))
+          )}
+        </div>
       </PopoverContent>
     </Popover>
   );

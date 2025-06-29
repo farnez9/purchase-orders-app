@@ -10,6 +10,8 @@ import { Input } from "../../components/ui/Input";
 import { Combobox } from "../../components/ui/Combobox";
 import { Button } from "../../components/ui/Button";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import useProducts from "../../hooks/useProducts";
+import { useMemo } from "react";
 
 type FormValues = {
   productId?: string;
@@ -28,7 +30,15 @@ const FilterForm = () => {
     console.log("Form values: ", data);
   };
 
-  // TODO: call api to fetch products
+  const { isPending, error, data } = useProducts();
+
+  const poroductOptions = useMemo(() => {
+    if (!data?.products) return [];
+    return data.products?.map((product) => ({
+      value: product.id.toString(),
+      label: product.name,
+    }));
+  }, [data?.products]);
 
   return (
     <Form {...form}>
@@ -47,10 +57,10 @@ const FilterForm = () => {
                 <Combobox
                   placeholder="Select a product"
                   noDataText="No products found"
-                  // TODO: get products from API
-                  data={[]}
+                  data={poroductOptions}
                   value={field.value}
                   onChange={field.onChange}
+                  isLoading={isPending}
                 />
               </FormControl>
               <FormMessage />
