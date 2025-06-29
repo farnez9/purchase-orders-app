@@ -9,30 +9,20 @@ import {
 import { Input } from "../../components/ui/Input";
 import { Combobox } from "../../components/ui/Combobox";
 import { Button } from "../../components/ui/Button";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import useProducts from "../../hooks/useProducts";
+import { type SubmitHandler, type UseFormReturn } from "react-hook-form";
+import useGetProducts from "../../hooks/useGetProducts";
 import { useMemo } from "react";
+import type { FormValues } from "./PurchasePage";
 
-type FormValues = {
-  productId?: string;
-  quantity?: string;
-};
+interface FilterFormProps {
+  form: UseFormReturn<FormValues, any, FormValues>;
+  onSubmit: SubmitHandler<FormValues>;
+}
 
-const FilterForm = () => {
-  const form = useForm<FormValues>({
-    defaultValues: {
-      productId: "",
-      quantity: "",
-    },
-  });
+const FilterForm = ({ form, onSubmit }: FilterFormProps) => {
+  const { isPending, error, data } = useGetProducts();
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Form values: ", data);
-  };
-
-  const { isPending, error, data } = useProducts();
-
-  const poroductOptions = useMemo(() => {
+  const productOptions = useMemo(() => {
     if (!data?.products) return [];
     return data.products?.map((product) => ({
       value: product.id.toString(),
@@ -44,7 +34,7 @@ const FilterForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col md:flex-row gap-3 p-10 md:items-center"
+        className="flex flex-col md:flex-row gap-3 md:items-center"
       >
         <FormField
           control={form.control}
@@ -57,7 +47,7 @@ const FilterForm = () => {
                 <Combobox
                   placeholder="Select a product"
                   noDataText="No products found"
-                  data={poroductOptions}
+                  data={productOptions}
                   value={field.value}
                   onChange={field.onChange}
                   isLoading={isPending}
@@ -89,7 +79,7 @@ const FilterForm = () => {
             </FormItem>
           )}
         />
-        <Button variant="outline" type="submit">
+        <Button variant="outline" type="submit" className="mb-1">
           Search
         </Button>
       </form>

@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { API_URL } from "./queryUtils";
+import { GET_PRODUCTS_URL } from "./queryUtils";
 import type { GetProductsResponse } from "../types/products";
 
-const useProducts = () => {
+const useGetProducts = () => {
   const { isPending, error, data } = useQuery<GetProductsResponse>({
     queryKey: ["products"],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/products`);
+      const response = await fetch(GET_PRODUCTS_URL);
       return await response.json();
     },
   });
@@ -18,4 +18,4 @@ const useProducts = () => {
   };
 };
 
-export default useProducts;
+export default useGetProducts;

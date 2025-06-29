@@ -1,12 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Check,
-  CheckIcon,
-  ChevronsUpDownIcon,
-  LoaderCircle,
-} from "lucide-react";
+import { useState } from "react";
+import { CheckIcon, ChevronsUpDownIcon, LoaderCircle } from "lucide-react";
 
 import { cn } from "../../lib/utils";
 import { Button } from "./Button";
