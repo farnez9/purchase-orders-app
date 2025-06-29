@@ -1,5 +1,11 @@
+import FilterForm from "./FilterForm";
+
 const PurchasePage = () => {
-  return <h1 className="text-3xl font-bold underline">Purchase page</h1>;
+  return (
+    <div>
+      <FilterForm />
+    </div>
+  );
 };
 
 export default PurchasePage;
