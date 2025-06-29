@@ -21,7 +21,6 @@ async function main() {
     // returns count, not the products created
     const products = await prisma.product.createMany({
         data: [
-            { name: 'Philips monitor 17”', sellingPrice: 200 },
             { name: 'Logitech Keyboard', sellingPrice: 50 },
             { name: 'Dell Mouse', sellingPrice: 25 },
             { name: 'Asus 24” Monitor', sellingPrice: 220 },

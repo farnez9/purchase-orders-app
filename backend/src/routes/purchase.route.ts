@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { test } from '../controllers/purchase.controller';
+import { getBestPurchaseOption } from '../controllers/purchase.controller';
 
 const router = Router();
 
-router.get('/', test);
+router.get('/', getBestPurchaseOption);
 
 export default router;
