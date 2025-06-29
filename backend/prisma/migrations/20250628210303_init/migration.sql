@@ -30,6 +30,6 @@ CREATE TABLE "Discount" (
     "type" TEXT NOT NULL,
     "condition" REAL NOT NULL,
     "percentage" REAL NOT NULL,
-    "dateCondition" TEXT,
+    "dateCondition" DATETIME,
     CONSTRAINT "Discount_supplierId_fkey" FOREIGN KEY ("supplierId") REFERENCES "Supplier" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
