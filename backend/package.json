@@ -7,7 +7,9 @@
     "start": "ts-node src/app.ts",
     "build": "tsc",
     "serve": "node dist/app.js",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "db-deploy": "npx prisma migrate deploy && npx prisma generate",
+    "db-reset": "ts-node src/reset.ts"
   },
   "keywords": [],
   "author": "",
