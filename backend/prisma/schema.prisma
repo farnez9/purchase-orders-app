@@ -12,6 +12,7 @@ model Product {
   name         String
   sellingPrice Float
   stocks       Stock[]
+  orders       Order[]
 }
 
 model Supplier {
@@ -20,6 +21,7 @@ model Supplier {
   shippingDays Int
   stocks       Stock[]
   discounts    Discount[]
+  orders       Order[]
 }
 
 model Stock {
@@ -46,4 +48,18 @@ enum DiscountType {
   VALUE
   QUANTITY
   DATE
+}
+
+model Order {
+  id            Int       @id @default(autoincrement())
+  product       Product   @relation(fields: [productId], references: [id])
+  productId     Int
+  supplier      Supplier  @relation(fields: [supplierId], references: [id])
+  supplierId    Int
+  shippingDays  Int
+  pricePerUnit  Float
+  quantity      Int
+  baseTotal     Float
+  finalTotal    Float
+  createdAt     DateTime  @default(now())
 }
