@@ -7,6 +7,9 @@ const useGetProducts = () => {
     queryKey: ["products"],
     queryFn: async () => {
       const response = await fetch(GET_PRODUCTS_URL);
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
       return await response.json();
     },
   });
