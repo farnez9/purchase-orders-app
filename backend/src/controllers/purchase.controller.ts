@@ -14,6 +14,7 @@ export const getBestPurchaseOption: RequestHandler<
 
     if (isNaN(productId) || isNaN(quantity) || quantity <= 0) {
         res.status(400).json({ error: 'Product not found' });
+        return;
     }
 
     try {
@@ -22,9 +23,11 @@ export const getBestPurchaseOption: RequestHandler<
     } catch (error) {
         if (error instanceof NotFoundError) {
             res.status(404).json({ error: error.message });
+            return;
         }
         if (error instanceof BadRequestError) {
             res.status(400).json({ error: error.message });
+            return;
         }
     }
 };

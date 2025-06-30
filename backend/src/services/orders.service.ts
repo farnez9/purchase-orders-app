@@ -13,7 +13,7 @@ export const createOrder = async (data: CreateOrderDto) => {
         finalTotal
     } = data;
 
-    return prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx) => {
         const stock = await tx.stock.findUnique({
             where: {
                 productId_supplierId: {
@@ -43,7 +43,6 @@ export const createOrder = async (data: CreateOrderDto) => {
             },
         });
 
-        // 3. Update stock quantity (decrement)
         await tx.stock.update({
             where: {
                 id: stock.id,
@@ -56,3 +55,12 @@ export const createOrder = async (data: CreateOrderDto) => {
         return order;
     });
 };
+
+export const getOrders = async () => {
+    return await prisma.order.findMany({
+        include: {
+            product: true,
+            supplier: true,
+        },
+    });
+}

@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import * as orderService from "../services/orders.service"
-import { CreateOrderDto, CreateOrderResponseDto } from "../dto/orders";
+import { CreateOrderDto, CreateOrderResponseDto, GetOrdersResponseDto } from "../dto/orders";
 import { ErrorResponseDto } from "../dto/error";
 
 export const createOrder: RequestHandler<
@@ -13,6 +13,7 @@ export const createOrder: RequestHandler<
 
     if (!body.productId || !body.supplierId || !body.quantity) {
         res.status(400).json({ error: 'Missing required fields' });
+        return;
     }
 
     const order = await orderService.createOrder(body);
@@ -22,3 +23,13 @@ export const createOrder: RequestHandler<
         supplierName: body.supplierName,
     });
 };
+
+export const getOrders: RequestHandler<
+    undefined,
+    GetOrdersResponseDto | ErrorResponseDto,
+    undefined,
+    undefined
+> = async (req, res) => {
+    const orders = await orderService.getOrders();
+    res.status(200).json({ orders });
+}
