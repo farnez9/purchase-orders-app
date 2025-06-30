@@ -32,6 +32,8 @@ model Stock {
   productId  Int
   price      Float
   quantity   Int
+
+  @@unique([productId, supplierId])
 }
 
 model Discount {
