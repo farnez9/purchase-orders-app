@@ -5,15 +5,23 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/Card";
-import type { GetBestPurchaseOptionResponseDto } from "../../types/purchse";
+import type {
+  GetBestPurchaseOptionResponseDto,
+  PurchaseOptionDto,
+} from "../../types/purchse";
 import { cn } from "../../lib/utils";
 
 interface PurchaseOptionListProps {
   data?: GetBestPurchaseOptionResponseDto;
   className?: string;
+  onSelectOption?: (option: PurchaseOptionDto) => void;
 }
 
-const PurchaseOptionList = ({ data, className }: PurchaseOptionListProps) => {
+const PurchaseOptionList = ({
+  data,
+  className,
+  onSelectOption,
+}: PurchaseOptionListProps) => {
   return (
     <div className={cn("mt-10", className)}>
       {data && (
@@ -33,6 +41,7 @@ const PurchaseOptionList = ({ data, className }: PurchaseOptionListProps) => {
               "border shadow-sm rounded-2xl mb-4",
               i == 0 && "border-green-600 bg-green-50"
             )}
+            onClick={() => onSelectOption?.(option)}
           >
             <CardHeader>
               <CardTitle>{option.supplierName}</CardTitle>
@@ -43,7 +52,7 @@ const PurchaseOptionList = ({ data, className }: PurchaseOptionListProps) => {
             <CardContent className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
               <div>
                 <span className="font-medium text-foreground">Price/Unit:</span>{" "}
-                ${option.pricePerUnit.toFixed(2)}
+                ${option.pricePerUnit?.toFixed(2)}
               </div>
               <div>
                 <span className="font-medium text-foreground">Quantity:</span>{" "}
@@ -51,14 +60,14 @@ const PurchaseOptionList = ({ data, className }: PurchaseOptionListProps) => {
               </div>
               <div>
                 <span className="font-medium text-foreground">Base Total:</span>{" "}
-                ${option.baseTotal.toFixed(2)}
+                ${option.baseTotal?.toFixed(2)}
               </div>
               <div>
                 <span className="font-medium text-foreground">
                   Final Total:
                 </span>{" "}
                 <span className="text-green-600 font-semibold">
-                  ${option.finalTotal.toFixed(2)}
+                  ${option.finalTotal?.toFixed(2)}
                 </span>
               </div>
             </CardContent>

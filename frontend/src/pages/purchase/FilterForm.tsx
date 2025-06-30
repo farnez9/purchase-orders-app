@@ -20,7 +20,7 @@ interface FilterFormProps {
 }
 
 const FilterForm = ({ form, onSubmit }: FilterFormProps) => {
-  const { isPending, error, data } = useGetProducts();
+  const { isPending, data } = useGetProducts();
 
   const productOptions = useMemo(() => {
     if (!data?.products) return [];

@@ -1,3 +1,4 @@
+import { LoaderCircle } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -7,16 +8,24 @@ import {
   TableCell,
 } from "../../components/ui/Table";
 import { cn } from "../../lib/utils";
-import type { GetBestPurchaseOptionResponseDto } from "../../types/purchse";
+import type {
+  GetBestPurchaseOptionResponseDto,
+  PurchaseOptionDto,
+} from "../../types/purchse";
+import { Button } from "../../components/ui/Button";
 
 interface PurchaseOptionsTableProps {
   data?: GetBestPurchaseOptionResponseDto;
   className?: string;
+  isLoading?: boolean;
+  onSelectOption?: (option: PurchaseOptionDto) => void;
 }
 
 const PurchaseOptionsTable = ({
   data,
   className,
+  isLoading,
+  onSelectOption,
 }: PurchaseOptionsTableProps) => {
   return (
     <div className={cn("p-4 rounded-2xl bg-white shadow-sm border", className)}>
@@ -47,11 +56,19 @@ const PurchaseOptionsTable = ({
               >
                 <TableCell>{option.supplierName}</TableCell>
                 <TableCell>{option.shippingDays} days</TableCell>
-                <TableCell>${option.pricePerUnit.toFixed(2)}</TableCell>
+                <TableCell>${option.pricePerUnit?.toFixed(2)}</TableCell>
                 <TableCell>{option.quantity}</TableCell>
-                <TableCell>${option.baseTotal.toFixed(2)}</TableCell>
+                <TableCell>${option.baseTotal?.toFixed(2)}</TableCell>
                 <TableCell className="font-semibold text-green-600">
-                  ${option.finalTotal.toFixed(2)}
+                  ${option.finalTotal?.toFixed(2)}
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="outline"
+                    onClick={() => onSelectOption?.(option)}
+                  >
+                    Buy
+                  </Button>
                 </TableCell>
               </TableRow>
             ))
@@ -61,7 +78,11 @@ const PurchaseOptionsTable = ({
                 colSpan={6}
                 className="text-center text-muted-foreground p-10"
               >
-                No purchase options available.
+                {isLoading ? (
+                  <LoaderCircle className="animate-spin ml-2 h-4 w-4 shrink-0 opacity-50" />
+                ) : (
+                  "No purchase options available."
+                )}
               </TableCell>
             </TableRow>
           )}
