@@ -1,3 +1,4 @@
+import type { Order } from "./orders";
 import type { Stock } from "./stocks";
 
 export type GetProductsResponse = {
@@ -8,5 +9,6 @@ export type Product = {
     id: number;
     name: string;
     sellingPrice: number;
-    stocks: Stock[];
+    stocks?: Stock[];
+    orders?: Order[];
 }
