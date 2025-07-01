@@ -29,7 +29,7 @@ If you want to clear db data and start fresh, run `npm run db-reset`
 
 # Usage
 
-Move between the `Purchase` and `Orders` pages by clicking the butto on the top left of the page in order to open the sidebar and change page
+Move between the `Purchase` and `Orders` pages by clicking the button at the top left in order to open the sidebar and change page
 
 ## Purchase
 
