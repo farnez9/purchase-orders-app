@@ -20,7 +20,7 @@
 - **Install**: `cd purchase-order-app` and `npm i`
 - **DB**: create a `.env` file inside `/purchase-orders-app/backend/` and specify the db url using the env variable `DATABASE_URL`, for example: `DATABASE_URL="file:./dev.db"`
 - **Initilize Db**: run `npm run db-deploy` from the root folder
-- **Run Back-end**: `backend-start`
+- **Run Back-end**: `npm backend-start`
 - **Run Front-end**: `npm frontend-start`
 
 Feel free to modify the file inside `purchase-orders-app/backend/src/seed.ts` and run `npm backend seed` from the root folder in order to seed the database with initial data
